@@ -5,6 +5,7 @@ import classes from "./Navigation.module.css";
 
 const Navigation = (props) => {
   const ctx = useContext(AuthContext);
+
   return (
     <nav className={classes.nav}>
       <ul>
@@ -20,7 +21,7 @@ const Navigation = (props) => {
         )}
         {ctx.isLoggedIn && (
           <li>
-            <button onClick={ctx.onLogout}>Logout</button>
+            <button onClick={ctx.logoutHandler}>Logout</button>
           </li>
         )}
       </ul>
