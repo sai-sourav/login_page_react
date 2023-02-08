@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
+import React, { useState, useEffect, useReducer, useContext, useRef } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -41,6 +41,10 @@ const Login = (props) => {
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
+
+  const emailref = useRef();
+  const pswdref = useRef();
+  const collegeref = useRef();
 
   // const [enteredcollege, setEnteredCollege] = useState('');
   // const [collegeIsValid, setcollegeIsValid] = useState();
@@ -97,7 +101,16 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     // props.onLogin(enteredEmail, enteredPassword);
-    ctx.loginHandler(emailState.value, pswdState.value, collegestate.value);
+    if(formIsValid){
+      ctx.loginHandler(emailState.value, pswdState.value, collegestate.value);
+    }else if(!emailState.isValid){
+      emailref.current.focus();
+    }else if(!pswdState.isValid){
+      pswdref.current.focus();
+    }else{
+      collegeref.current.focus();
+    }
+    
   };
 
   return (
@@ -113,6 +126,7 @@ const Login = (props) => {
           <Input
             type="email"
             id="email"
+            ref={emailref}
             // value={enteredEmail}
             value={emailState.value}
             onChange={emailChangeHandler}
@@ -128,6 +142,7 @@ const Login = (props) => {
           <Input
             type="password"
             id="password"
+            ref={pswdref}
             value={pswdState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
@@ -142,13 +157,14 @@ const Login = (props) => {
           <Input
             type="text"
             id="college"
+            ref={collegeref}
             value={collegestate.value}
             onChange={collegeChangeHandler}
             onBlur={validatecollegeHandler}
           />
         </div>
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          <Button type="submit" className={classes.btn} >
             Login
           </Button>
         </div>
